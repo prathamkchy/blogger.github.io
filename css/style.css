@@ -2123,36 +2123,102 @@ ul.social_icon li a {
 
 /*------------------------register page--------------------------*/
 
-.centerreg{
-	height: 60vh;
+.main-registration{
+	height:60vh;
+	margin: 10px 40% 10% 30%;
 }
 
-.centerreg{
+.main-registration.centerreg{
 	position: absolute;
-	top: 10%;
-	left: 60%;
+	top: 50%;
+	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 600px;
+	width: 500px;
+	background: white;
 	border-radius: 10px;
 }
 
 .centerreg form{
-	padding: 0 500px;
+	padding: 0 40px;
 	box-sizing: border-box;
 }
 
-form.txt_field{
+form  .txt_field{
 	position: relative;
-	border-bottom: 2px solid #adadad; 
+	border-bottom: 2px solid #adadad;
+	margin: 30px 0;
 }
 
+.txt_field input{
+	width: 100%;
+	padding: 0 5px;
+	height: 42px;
+	font-size: 16px;
+	border: none;
+	background: none;
+	outline: none;
+}
 
+.txt_field label{
+	position: absolute;
+	top: 0px;
+	left: 10px;
+	color: #726e6e;
+	transform: translateY(-50%);
+	font-size: 16px;
+	transition: .5s;
+}
+	
+.txt_field span::before{
+	content: '';
+	position: absolute;
+	top: 42px;
+	left: 0px;
+	width: 0%;
+	height: 3px;
+	background: #ff0000;
+	transition: .5s;
+}
 
+.txt_field input:focus ~ label,
+.txt_field input:valid ~ label{
+	top: -5px;
+	color: rgb(17, 17, 17);
+}
 
+.txt_field input:focus ~ span::before,
+.txt_field input:valid ~ span::before{
+	width: 100%;
+}
 
+input[type="submit"]{
+  width: 100%;
+  height: 50px;
+  border: 1px solid;
+  background: #ff0000;
+  border-radius: 25px;
+  font-size: 18px;
+  color: rgb(17, 17, 17);
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+input[type="submit"]:hover{
+  border-color: #2691d9;
+  transition: .5s;
+}
 
-
-
-
-
-
+.signup_link{
+	margin: 30px 0;
+	text-align: center;
+	font-size: 16px;
+	color: #666666;
+  }
+  .signup_link a{
+	color: #ff0000;
+	text-decoration: none;
+  }
+  .signup_link a:hover{
+	text-decoration: underline;
+  }
+  
