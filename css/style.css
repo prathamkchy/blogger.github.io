@@ -2222,3 +2222,9 @@ input[type="submit"]:hover{
 	text-decoration: underline;
   }
   
+/*--------------------login page-----------------------------------------*/
+
+.main-login{
+	height:30vh;
+	margin: 10px 40% 10% 30%;
+}

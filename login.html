@@ -101,15 +101,31 @@
     </div>
  </div>
  
- 
- 
-       <div class="section layout_padding">
-          <div class="container">
 
-                
+<!---------------------------register page---------------------------------->   
+ <div class="main-login"> 
+   <div class="centerreg">
+         <form action="login.php" method="post">
+           <div class="txt_field">
+               <input type="text" name="log_username" required>
+               <span></span>
+               <label for="log_username">Username</label>
+           </div>
+           <div class="txt_field">
+               <input type="password" name="log_password" maxlength="12" required>
+               <span></span>
+               <label for="log_password">Password</label>
+           </div>
+           <input type="submit" name="login" value="Login">
+           <div class="signup_link">
+               Don't have an account? <a href="register.html">register</a>
+           </div>
+         </form>
+   </div>
+</div> 
 
-          </div>
-       </div>
+
+
        <!-- end section -->
 
    
