@@ -2123,6 +2123,39 @@ ul.social_icon li a {
 
 /*------------------------register page--------------------------*/
 
+.signin{
+	height: 60vh;
+}
+
+.signin.centerreg{
+	position: absolute;
+	top: 10%;
+	left: 0%;
+	transform: translate(-50%, -50%);
+	width: 500px;
+	border-radius: 10px;
+}
+
+.centerreg h1{
+	text-align: center;
+	padding: 0 0 20px 0;
+}
+
+.centerreg form{
+	padding: 0 40px;
+	box-sizing: border-box;
+}
+
+form.txt_field{
+	position: relative;
+	border-bottom: 2px solid #adadad; 
+}
+
+
+
+
+
+
 
 
 
