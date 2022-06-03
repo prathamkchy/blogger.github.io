@@ -28,6 +28,37 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->    
 </head>
 
+
+<!----------------------------- php database connectivity ------------------------------->
+<?php
+
+$servername="localhost";
+$username="root";
+$password="";
+$db="blogging_site";
+
+$conn=mysqli_connect($servername,$username,$password,$db,3306);
+
+
+if(isset($_POST["register"])){
+         $username=$_POST['reg_username'];
+         $email=$_POST['reg_email'];
+         $contacts=(int)$_POST['reg_contact'];
+         $address=$_POST['reg_address'];
+         $password=$_POST['reg_password'];
+         $confirmp=$_POST['reg_conpassword'];
+
+         $query="INSERT INTO user VALUES (103,'$username', '$email', $contacts, '$password')";
+
+         if($password==$confirmp)
+         {
+            mysqli_query($conn,$query);
+         }
+}
+
+mysqli_close($conn);
+?>
+
    <!-- body -->
    <body class="main-layout">
     <!-- loader  -->
@@ -52,7 +83,7 @@
                    <div class="limit-box">
                       <nav class="main-menu">
                          <ul class="menu-area-main">
-                            <li ">
+                            <li >
                                <a href="index.html">Home</a>
                             </li>
                             <li >
@@ -67,11 +98,11 @@
                             <li>
                                <a href="contact.html">Contact us</a>
                             </li>
-                            <li class="active">
-                               <a href="login.html">Login</a>
-                            </li>
                             <li>
-                               <a href="register.html">Register</a>
+                               <a href="login.php">Login</a>
+                            </li>
+                            <li class="active">
+                               <a href="register.php">Register</a>
                             </li>
                             <li>
                                <a href="#"><img src="images/search_icon.png" alt="#" /></a>
@@ -94,22 +125,48 @@
        <div class="row">
           <div class="col-md-12">
              <div class="aboutheading">
-                <h3>Log<span class="orange_color">in</span></h3>
+                <h3>Regis<span class="orange_color">ter</span></h3>
              </div>
           </div>
        </div>
     </div>
  </div>
  
- 
- 
-       <div class="section layout_padding">
-          <div class="container">
-
-                
-
-          </div>
-       </div>
+ <!---------------------------register page---------------------------------->
+      <div class="col-lg-2 col-md-6">
+            <div class="centerreg">
+                <form class="reform" action="register.php" method="post">
+                    <div class="txt_field">
+                        <input type="text" name="reg_username" required>
+                        <label for="reg_username">Username</label>
+                    </div>
+                    <div class="txt_field">
+                        <input type="text" name="reg_email" required>
+                        <label for="reg_email">Email ID</label>
+                    </div>
+                    <div class="txt_field">
+                        <input type="number" name="reg_contact" maxlength="10">
+                        <label for="reg_contact">Contact</label>
+                    </div>
+                    <div class="txt_field">
+                        <input type="text" name="reg_address" >
+                        <label for="reg_address"><Address>Address</Address></label>
+                    </div>
+                    <div class="txt_field">
+                        <input type="password" name="reg_password" maxlength="12" required>
+                        <label for="reg_password">Password</label>
+                    </div>
+                    <div class="txt_field">
+                        <input type="password" name="reg_conpassword" maxlength="12" required>
+                        <label for="reg_conpassword">Confirm Password</label>
+                    </div>
+                    <input type="submit" name="register" value="Register">
+                    <div class="login_link">
+                        Already registered? <a href="login.html">login</a>
+                    </div>
+                </form>
+            </div>
+      </div> 
        <!-- end section -->
 
    
