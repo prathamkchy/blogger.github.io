@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +11,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="viewport" content="initial-scale=1, maximum-scale=1">
       <!-- site metas -->
-      <title>Jack Blogger</title>
+      <title>Talent Pool</title>
       <meta name="keywords" content="">
       <meta name="description" content="">
       <meta name="author" content="">
@@ -32,20 +35,48 @@
 <!----------------------------------------------- php database connectivity ------------------------------------------------------->
 <?php
 
-$servername="localhost";
-$username="root";
-$password="";
-$db="blogging_site";
-
-$conn=mysqli_connect($servername,$username,$password,$db,3306);
-
+include 'connect.php';
+$_SESSION["userloged"]=false;
 
 if(isset($_POST["login"])){
-      $username=$_POST['log_username'];
-      $password=$_POST['log_password'];
+   $username=$_POST['log_username'];
+   $password=$_POST['log_password'];
 
+   $query="select * from user";
+   $record=mysqli_query($conn,$query);
+
+   while($data= mysqli_fetch_array($record)){
       
+      if($username==$data['user_name'] && $password==$data['user_password']){
+         $_SESSION["userloged"]=true;
+         header("Location: http://localhost/blogger_project_update/index.php");
+      }
+      else{
+         echo'<script type="text/JavaScript"> 
+         alert("Account not found!! Enter login details correctly");
+         </script>';
+      }
+   }
+}
 
+if(isset($_SESSION["action"])){
+
+   if($_SESSION["action"] == "success" ){
+      echo '<script type="text/JavaScript"> 
+      alert("Registration Successful! Please login to your account");
+      </script>';
+      $_SESSION["action"]="";
+   }
+}
+
+if(isset($_SESSION["notlogged"])){
+
+   if($_SESSION["notlogged"] == "fail" ){
+      echo '<script type="text/JavaScript"> 
+      alert("Not logged in! Please login to your account");
+      </script>';
+      $_SESSION["notlogged"]="";
+   }
 }
 
 mysqli_close($conn);
@@ -70,7 +101,7 @@ mysqli_close($conn);
              <div class="col-lg-3 logo_section">
                 <div class="full">
                    <div class="center-desk">
-                      <div class="logo"> <a href="index.html"><img src="images/logo.png" alt="#"></a> </div>
+                        <div class="logo" > <a href="index.php"><img src="images/Talentpool.png" alt="#"></a> </div>
                    </div>
                 </div>
              </div>
@@ -80,16 +111,13 @@ mysqli_close($conn);
                       <nav class="main-menu">
                          <ul class="menu-area-main">
                             <li>
-                               <a href="index.html">Home</a>
+                               <a href="index.php">Home</a>
                             </li>
                             <li >
-                               <a href="about.html">About</a>
+                               <a href="blog.php">Blog</a>
                             </li>
                             <li>
-                               <a href="marketing.html">Marketing</a>
-                            </li>
-                            <li>
-                               <a href="blog.html">Blog</a>
+                               <a href="writeblog.php">Write Blog</a>
                             </li>
                             <li>
                                <a href="contact.html">Contact us</a>
@@ -99,9 +127,6 @@ mysqli_close($conn);
                             </li>
                             <li>
                                <a href="register.php">Register</a>
-                            </li>
-                            <li>
-                               <a href="#"><img src="images/search_icon.png" alt="#" /></a>
                             </li>
                          </ul>
                       </nav>
@@ -146,6 +171,9 @@ mysqli_close($conn);
            <input type="submit" name="login" value="Login">
            <div class="signup_link">
                Don't have an account? <a href="register.php">register</a>
+           </div>
+           <div class="signup_link">
+               want to login as admin? <a href="NiceAdmin/NiceAdmin/pages-login.php">Admin</a>
            </div>
          </form>
    </div>

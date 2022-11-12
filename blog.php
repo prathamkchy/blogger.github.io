@@ -1,3 +1,17 @@
+<?php
+session_start();
+
+if(isset($_GET['page'])){
+   $page=$_GET['page'];
+}
+else{
+   $page=1;
+}
+
+$post_per_page=7;
+$result=($page-1)*$post_per_page;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
    <head>
@@ -8,7 +22,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="viewport" content="initial-scale=1, maximum-scale=1">
       <!-- site metas -->
-      <title>Jack Blogger</title>
+      <title>Talent Pool</title>
       <meta name="keywords" content="">
       <meta name="description" content="">
       <meta name="author" content="">
@@ -51,16 +65,16 @@
                      <div class="limit-box">
                         <nav class="main-menu">
                            <ul class="menu-area-main">
-                              <li>
+                              <li >
                                  <a href="index.php">Home</a>
                               </li>
-                              <li>
-                                 <a href="blog.php">Blog</a>
+                              <li class="active">
+                                 <a href="blog.php">Blogs</a>
                               </li>
                               <li>
                                  <a href="writeblog.php">Write Blog</a>
                               </li>
-                              <li class="active">
+                              <li>
                                  <a href="contact.html">Contact us</a>
                               </li>
                               <li>
@@ -79,69 +93,163 @@
          <!-- end header inner -->
       </header>
       <!-- end header -->
-      <div class="contact-bg">
+     
+      <!-- section --> 
+<div class="About-bg">
    <div class="container">
       <div class="row">
          <div class="col-md-12">
-            <div class="contactheading">
-               <h3>contact Us</h3>
+            <div class="aboutheading">
+               <h3>Blo<span class="orange_color">gs</span></h3>
             </div>
          </div>
       </div>
    </div>
 </div>
-      <!-- section -->
-      <section class="layout_padding">
-         <div class="container">
-           
-            
-            
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="full comment_form">
-                     <form action="index.html">
-                        <fieldset>
-                           <div class="col-md-12">
-                              <div class="row">
-                                 <div class="col-md-6">
-                                    <input type="text" name="name" placeholder="Name" required="#" />
-                                    <input type="email" name="email" placeholder="Email" required="#" />
-                                     <input type="text" name="subject" placeholder="subject" required="#" />
-                                 </div>
-                                 <div class="col-md-6">
-                                    <textarea class="wdt" placeholder="Comment"></textarea>
-                                 </div>
-                              </div>
-                              <div class="row margin_top_30">
-                                 <div class="col-md-12">
-                                    <div class="center">
-                                       <button>Send</button>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </fieldset>
-                     </form>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </section>
-      <!-- end section -->
 
-      <section>
-         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12" style="padding: 0;">
-                   <div class="map_section">
-                     <div id="map">
-                     </div>
-                   </div>
+
+
+
+
+
+
+
+
+<!--------------------- blogs -------------------------->
+
+
+<div>
+    <div class="container m-auto mt-3 row">
+        <div class="col-8">
+
+        <?php
+         include 'connect.php';
+
+         $postQuery="SELECT * FROM content ORDER BY postid DESC LIMIT $result,$post_per_page";
+         $runPQ=mysqli_query($conn, $postQuery);
+         while($post=mysqli_fetch_assoc($runPQ)){
+            ?>
+
+            <div class="card mb-3" style="max-width: 800px;margin-bottom: 2rem!important;margin-top: 2rem!important;">
+            <a href="post.php?id=<?= $post['postid']?>">
+
+            <div class="row g-0">
+              <div class="col-md-5" style="background-image: url('<?= $post['image']?>');background-size: cover">
+                <!-- <img src="https://images.moneycontrol.com/static-mcnews/2020/04/stock-in-the-news-770x433.jpg" alt="..."> -->
+              </div>
+              <div class="col-md-7">
+                <div class="card-body">
+                  <h3 class="card-title"><?= $post['Heading'] ?></h3>
+                  <p class="card-text text-truncate"> <?= $post['content']?> </p>
+                  <p class="card-text"><small class="text-muted">posted on <?= date('F jS,Y',strtotime($post['date']))?></small></p>
                 </div>
+              </div>
             </div>
-         </div>
-      </section>
+            </a>
+          </div>
+
+
+            <?php
+         }
+
+        ?>
+
+
+    </div>
+
+
+<!--------------------- sidebar-------------------------->      
+    <div class="col-4">
+        <div class="card mb-3">
+            <h5 class="card-header">Featured</h5>
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <h5 class="card-header">Featured</h5>
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <h5 class="card-header">Featured</h5>
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+          
+    </div>
+    </div>
+
+<!--------------------- navigation -------------------------->    
+
+<?php
+$q="SELECT * FROM content";
+$r=mysqli_query($conn,$q);
+$total_posts=mysqli_num_rows($r);
+$total_pages=ceil($total_posts/$post_per_page);
+?>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+         <?php
+         if($page>1){
+            $switch="";
+         }
+         else{
+            $switch="disabled";
+         }
+         if($page<$total_pages){
+            $nswitch="";
+         }
+         else{
+            $nswitch="disabled";
+         }
+         
+         ?>
+          <li class="page-item <?= $switch?>">
+            <a class="page-link" href="?page=<?= $page-1?>" tabindex="-1" aria-disabled="true">Previous</a>
+          </li>
+<!--------------------- pagenavigation -------------------------->  
+          <?php
+          for($opage=1;$opage<=$total_pages;$opage++){
+            ?>
+               <li class="page-item"><a class="page-link" href="?page=<?=$opage?>"><?=$opage?></a></li>
+            <?php
+          }
+          ?>
+<!--------------------- pagenavigation -------------------------->  
+
+          <li class="page-item <?= $nswitch?>">
+            <a class="page-link" href="?page=<?= $page+1?>">Next</a>
+          </li>
+        </ul>
+      </nav>
       
+      
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-top">
+        </nav>
+      
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>   
+
+<!--------------------- blogs -------------------------->
+
+      <!-- end section -->
+     
+
+
+
+
+
+
+
       <!-- footer -->
       <footer>
          <div class="container">
@@ -233,31 +341,5 @@
       <!-- Scrollbar Js Files -->
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script src="js/custom.js"></script>
-
-<script>
-
-      // This example adds a marker to indicate the position of Bondi Beach in Sydney,
-      // Australia.
-      function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 11,
-          center: {lat: 40.645037, lng: -73.880224},
-          });
-
-        var image = 'images/maps-and-flags.png';
-        var beachMarker = new google.maps.Marker({
-          position: {lat: 40.645037, lng: -73.880224},
-          map: map,
-          icon: image
-        });
-      }
-    </script>
-
-
-   <!-- google map js -->
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8eaHt9Dh5H57Zh0xVTqxVdBFCvFMqFjQ&callback=initMap"></script>
-      <!-- end google map js -->
-
-
    </body>
 </html>

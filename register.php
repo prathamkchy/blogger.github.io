@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +11,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="viewport" content="initial-scale=1, maximum-scale=1">
       <!-- site metas -->
-      <title>Jack Blogger</title>
+      <title>Talent Pool</title>
       <meta name="keywords" content="">
       <meta name="description" content="">
       <meta name="author" content="">
@@ -31,29 +34,76 @@
 
 <!----------------------------------------------- php database connectivity ------------------------------------------------------->
 <?php
+include 'connect.php';
 
-$servername="localhost";
-$username="root";
-$password="";
-$db="blogging_site";
-
-$conn=mysqli_connect($servername,$username,$password,$db,3306);
-
+function randomDigits($length){ 
+   global $digits; // global to access from anyway
+   $numbers = range(0,9);
+   shuffle($numbers);
+   for($i = 0;$i < $length;$i++)
+   $digits .= $numbers[$i];
+   return $digits;
+}
 
 if(isset($_POST["register"])){
+
+
+
+         $userid=randomDigits(4);
+         $creator_id=randomDigits(4);
          $username=$_POST['reg_username'];
          $email=$_POST['reg_email'];
          $contacts=(int)$_POST['reg_contact'];
          $address=$_POST['reg_address'];
          $password=$_POST['reg_password'];
          $confirmp=$_POST['reg_conpassword'];
+         $usertype=$_POST['usertype'];
 
-         $query="INSERT INTO user() VALUES (103,'$username', '$email', $contacts, '$password')";
+         $query="INSERT INTO user VALUES ($userid,'$username', '$email', $contacts, '$address','$password')";
+         $query_1="INSERT INTO content_viewer VALUES ($userid,'$username', '$address','$email')";
+         $query_2="INSERT INTO content_creator VALUES ($creator_id,'$username', '$email','$password',$userid)";
 
-         if($password==$confirmp)
-         {
-            mysqli_query($conn,$query);
+         if($usertype==="Content viewer"){
+            if($password===$confirmp)
+            {
+               mysqli_query($conn,$query);
+               mysqli_query($conn,$query_1);
+               $_SESSION["action"]="success";
+               header("Location: http://localhost/blogger_project_update/login.php?action=success");
+            }
+            else{
+               header("Location: http://localhost/blogger_project_update/register.php");
+               $_SESSION["action"]="fail";
+            }
          }
+
+         else{
+            if($password===$confirmp)
+            {
+               mysqli_query($conn,$query);
+               mysqli_query($conn,$query_2);
+               $_SESSION["action"]="success";
+               $_SESSION["usertype"]="content_creator";
+               header("Location: http://localhost/blogger_project_update/login.php?action=success");
+            }
+            else{
+               header("Location: http://localhost/blogger_project_update/register.php");
+               $_SESSION["action"]="fail";
+            }
+         }
+
+
+}
+
+
+
+if(isset($_SESSION["action"])){
+
+   if($_SESSION["action"] == "fail" ){
+      echo '<script type="text/JavaScript"> 
+      alert("Registration failed! Please enter details carefully");
+      </script>';
+   }
 }
 
 mysqli_close($conn);
@@ -77,7 +127,7 @@ mysqli_close($conn);
              <div class="col-lg-3 logo_section">
                 <div class="full">
                    <div class="center-desk">
-                      <div class="logo"> <a href="index.html"><img src="images/logo.png" alt="#"></a> </div>
+                        <div class="logo" > <a href="index.php"><img src="images/Talentpool.png" alt="#"></a> </div>
                    </div>
                 </div>
              </div>
@@ -87,16 +137,13 @@ mysqli_close($conn);
                       <nav class="main-menu">
                          <ul class="menu-area-main">
                             <li >
-                               <a href="index.html">Home</a>
+                               <a href="index.php">Home</a>
                             </li>
                             <li >
-                               <a href="about.html">About</a>
+                               <a href="blog.php">Blog</a>
                             </li>
                             <li>
-                               <a href="marketing.html">Marketing</a>
-                            </li>
-                            <li>
-                               <a href="blog.html">Blog</a>
+                               <a href="writeblog.php">Write Blog</a>
                             </li>
                             <li>
                                <a href="contact.html">Contact us</a>
@@ -106,9 +153,6 @@ mysqli_close($conn);
                             </li>
                             <li class="active">
                                <a href="register.php">Register</a>
-                            </li>
-                            <li>
-                               <a href="#"><img src="images/search_icon.png" alt="#" /></a>
                             </li>
                          </ul>
                       </nav>
@@ -145,12 +189,12 @@ mysqli_close($conn);
                         <label for="reg_username">Username</label>
                     </div>
                     <div class="txt_field">
-                        <input type="text" name="reg_email" required>
+                        <input type="email" name="reg_email" required>
                         <span></span>
                         <label for="reg_email">Email ID</label>
                     </div>
                     <div class="txt_field">
-                        <input type="number" name="reg_contact" maxlength="10" required>
+                        <input type="tel" name="reg_contact" maxlength="10" required>
                         <span></span>
                         <label for="reg_contact">Contact</label>
                     </div>
@@ -158,6 +202,15 @@ mysqli_close($conn);
                         <input type="text" name="reg_address" required>
                         <span></span>
                         <label for="reg_address">Address</label>
+                    </div>
+                    <div class="txt_field">
+                        <input list="browsers" name="usertype" id="browser" required>
+                        <datalist id="browsers">
+                           <option value="Content viewer">
+                           <option value="Content creator">
+                        </datalist>
+                        <span></span>
+                        <label for="reg_address">User Type</label>
                     </div>
                     <div class="txt_field">
                         <input type="password" name="reg_password" maxlength="12" required>

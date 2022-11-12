@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
    <head>
@@ -8,7 +11,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="viewport" content="initial-scale=1, maximum-scale=1">
       <!-- site metas -->
-      <title>Jack Blogger</title>
+      <title>Talent Pool</title>
       <meta name="keywords" content="">
       <meta name="description" content="">
       <meta name="author" content="">
@@ -27,6 +30,38 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
    </head>
+
+<!----------------------------------------------- php database connectivity ------------------------------------------------------->
+<?php
+include 'connect.php';
+include 'fileupload.php';
+
+if(isset($_POST["submit"])){
+   
+   $heading=$_POST["Blog_heading"];
+   $content=$_POST["Blog"];
+   $date=date("Y/m/d");
+   $image=$fileDestination;
+   $category=$_POST["Category"];
+   
+   if($_SESSION['userloged']){
+      $query="INSERT INTO content(`Heading`, `content`, `date`, `image`, `category`) VALUES ('$heading','$content','$date','$image','$category')";
+      mysqli_query($conn,$query);
+      header("Location: http://localhost/blogger_project_update/writeblog.php");
+   }
+   else{
+      $_SESSION['notlogged']="fail";
+      header("Location: http://localhost/blogger_project_update/login.php");
+   }
+
+
+}
+
+mysqli_close($conn);
+?>
+
+<!------------------------------------------------------------------------------------------------------------------------------>
+
    <!-- body -->
    <body class="main-layout">
       <!-- loader  -->
@@ -42,7 +77,7 @@
                <div class="col-lg-3 logo_section">
                   <div class="full">
                      <div class="center-desk">
-                        <div class="logo"> <a href="index.html"><img src="images/logo.png" alt="#"></a> </div>
+                        <div class="logo" > <a href="index.php"><img src="images/Talentpool.png" alt="#"></a> </div>
                      </div>
                   </div>
                </div>
@@ -51,29 +86,23 @@
                      <div class="limit-box">
                         <nav class="main-menu">
                            <ul class="menu-area-main">
-                              <li>
-                                 <a href="index.html">Home</a>
+                              <li >
+                                 <a href="index.php">Home</a>
                               </li>
                               <li>
-                                 <a href="about.html">About</a>
+                                 <a href="blog.php">Blog</a>
                               </li>
                               <li class="active">
-                                 <a href="marketing.html">Marketing</a>
-                              </li>
-                              <li>
-                                 <a href="blog.html">Blog</a>
+                                 <a href="writeblog.php">Write Blog</a>
                               </li>
                               <li>
                                  <a href="contact.html">Contact us</a>
                               </li>
                               <li>
-                                 <a href="login.html">Login</a>
+                                 <a href="login.php">Login</a>
                               </li>
                               <li>
-                                 <a href="#">Register</a>
-                              </li>
-                              <li>
-                                 <a href="#"><img src="images/search_icon.png" alt="#" /></a>
+                                 <a href="register.php">Register</a>
                               </li>
                            </ul>
                         </nav>
@@ -85,60 +114,85 @@
          <!-- end header inner -->
       </header>
       <!-- end header -->
-      <div class="Marketing-bg">
+      <!-- revolution slider -->
+      
+<div class="Blog-bg">
    <div class="container">
       <div class="row">
          <div class="col-md-12">
-            <div class="Marketingheading">
-               <h3>Marketing</h3>
+            <div class="Blogheading">
+               <h3>Write <span class="orange_color">Blogs</span></h3>
             </div>
          </div>
       </div>
    </div>
 </div>
-      <!-- section --> 
-      <div class="section layout_padding dark_bg">
-         <div class="container">
-            
-            <div class="row">
-               <div class="col-md-6">
-                  <img src="images/marketing_img.png" alt="#" />
-               </div>
-               <div class="col-md-6">
-                  <div class="full blog_cont">
-                     <h3 class="white_font">Where can I get some</h3>
-                     <h5 class="grey_font">March 19 2019 5 READ</h5>
-                     <p class="white_font">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined g to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator..</p>
-                  </div>
-               </div>
-            </div>
-            
-            </div>
-         </div>
-      </div>
-      <!-- end section -->
 
-       <!-- section --> 
-      <div class="section layout_padding">
-         <div class="container">
-            
-            <div class="row">
-   <div class="col-md-6">
-                  <div class="full blog_cont">
-                     <h3>Where can I get some</h3>
-                     <h5>March 19 2019 5 READ</h5>
-                     <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined g to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator..</p>
+
+
+<!-- section -->
+      <section class="layout_padding">
+         <div class="container" style="max-width: 85%;">
+            <div class="row margin_top_30">
+               <div class="col-md-12 margin_top_30">
+                  <div class="heading" style="padding-left: 15px;padding-right: 15px;">
+                     <h4>Post Your Blogs </h4>
                   </div>
                </div>
-               <div class="col-md-6">
-                  <img src="images/marketing_img.png" alt="#" />
+            </div>
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="full comment_form">
+                     <form action="writeblog.php" method="post" enctype="multipart/form-data" id="blogform">
+                        <fieldset>
+                           <div class="col-md-12">
+
+                              <div class="row">
+                                 <div class="col-md">
+                                    <input style="width:40%" type="text" name="Blog_heading" placeholder="Heading" required="#" />
+                                 </div>                                
+                              </div>
+                              <div class="row">
+                                 <div class="col-md">
+                                    <input style="width:82%" list="browsers" name="Category" placeholder="Category" required />
+                                    <datalist id="browsers">
+                                       <option value="fashion">
+                                       <option value="news">
+                                       <option value="history">
+                                       <option value="technology">
+                                    </datalist>
+                                 </div> 
+                                 <div class="col-md">
+                                    <input style="width:82%" type="file" name="file" required>
+                                 </div>                            
+                              </div>
+                              <div>
+                                 <textarea name="Blog" maxlength="800" placeholder="Blog"></textarea>
+                              </div>
+
+
+                              <div class="row margin_top_30">
+                                 <div class="col-md-12">
+                                    <div class="center">
+                                       <button  type="submit" form="blogform" value="submit" name="submit">upload</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </fieldset>
+                     </form>
+                  </div>
                </div>
-               
             </div>
          </div>
-      </div>
+      </section>
       <!-- end section -->
       
+
+
+
+
+
       <!-- footer -->
       <footer>
          <div class="container">
